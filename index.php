@@ -489,7 +489,7 @@ add_shortcode('lander_map', function () {
     min-width:140px;
   }
   #$wrap_id .phone-link{ font-size:11px !important; font-weight:400 !important; margin-top:5px; }
-  #$wrap_id .activity-badge{ font-size:10px !important; }
+  #$wrap_id .activity-badge{ font-size:8px !important; .padding: 0px }
 }
 
 @media (max-width: 360px){
@@ -556,6 +556,9 @@ add_shortcode('lander_map', function () {
   overflow: visible !important;
 }
 
+#$wrap_id .leaflet-container{
+  font-family: 'Vazirmatn', sans-serif !important;
+}
 
 
 
@@ -648,7 +651,22 @@ CSS;
     markersLayer = L.layerGroup().addTo(map);
 
     updateMapView(map);
-    window.addEventListener("resize", function(){ updateMapView(map); });
+    var __lastWidth = window.innerWidth;
+	var __rt = null;
+
+	window.addEventListener("resize", function () {
+	  clearTimeout(__rt);
+	  __rt = setTimeout(function () {
+		var w = window.innerWidth;
+
+		// فقط وقتی عرض تغییر کرد (چرخش گوشی / تغییر واقعی سایز)
+		if (w !== __lastWidth) {
+		  __lastWidth = w;
+		  updateMapView(map);
+		}
+	  }, 150);
+	});
+
 
     var bluePin = L.icon({
       iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
