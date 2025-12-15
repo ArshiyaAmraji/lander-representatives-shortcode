@@ -71,11 +71,11 @@ add_shortcode('lander_map', function () {
   width:100%;
   max-width:480px;
   padding:20px 16px;
-  background:#f8fafc;
   height: calc(100vh - 78px);
   display:flex;
   flex-direction:column;
   min-width:0; /* مهم برای flex */
+
 }
 
 #$wrap_id .list-box{
@@ -99,9 +99,9 @@ add_shortcode('lander_map', function () {
 #$wrap_id .top-filters{
   display:flex;
   align-items:center;
-  gap:10px;
-  margin-bottom:12px;
+  height:42px;
 }
+
 
 #$wrap_id select, 
 #$wrap_id input{
@@ -120,8 +120,9 @@ add_shortcode('lander_map', function () {
 
 #$wrap_id #$search_id{
   width:100%;
+  height: 2rem;
   padding:16px 20px;
-  margin:0 0 12px;
+  margin:10px 0 12px;
   border:2px solid #e2e8f0;
   border-radius:16px;
   font-size:13px;
@@ -138,16 +139,38 @@ add_shortcode('lander_map', function () {
 #$wrap_id .filter-mini-btn{
   width:42px;
   height:42px;
+  min-width:42px;
   border-radius:12px;
-  background:#1e40af;
+  background:linear-gradient(135deg,#1e40af,#1d4ed8);
+  border:2px solid #1e40af;
   color:#fff;
-  border:none;
-  cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:.2s;
+  cursor:pointer;
+  transition:all .2s ease;
+  box-shadow:0 6px 18px rgba(30,64,175,.35);
+  padding:5px;
+  margin-right: 5px;
+  vertical-align:middle; 
+  line-height:1;
 }
+
+#<?php echo $wrap_id; ?> .filter-mini-btn svg{
+  width:20px;
+  height:20px;
+  display:block;
+}
+
+#<?php echo $wrap_id; ?> .filter-mini-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 26px rgba(30,64,175,.45);
+}
+
+#<?php echo $wrap_id; ?> .filter-mini-btn:active{
+  transform:scale(.95);
+}
+
 #$wrap_id .filter-mini-btn:hover{ background:#1e3a8a; }
 
 #$wrap_id .nearest-inline-btn{
@@ -436,7 +459,7 @@ add_shortcode('lander_map', function () {
   #$wrap_id .container{
     order:1;
     max-width:none;
-    padding:16px 12px 0;
+    padding:0px;
     height:auto;
   }
   #$wrap_id .list-box{
@@ -449,7 +472,6 @@ add_shortcode('lander_map', function () {
     order:2;
     height:75vh;
     min-height:75vh;
-    margin:0 31px 12px;
     border-radius:28px;
   }
   #$wrap_id .desktop-nearest{ display:none; }
@@ -478,13 +500,53 @@ add_shortcode('lander_map', function () {
   #$wrap_id .popup-content h4{ font-size:14px !important; }
 }
 
-body.page-id-1301 .section,
-body.page-id-1301 .section_wrapper,
-body.page-id-1301 .wrap,
-body.page-id-1301 .column,
-body.page-id-1301 .column_attr {
-    background: transparent !important;
+
+/* اسکرول لیست موبایل */
+@media (max-width: 992px){
+  #$wrap_id .list-box{
+    max-height:90vh;
+    overflow:hidden;
+  }
+  #$wrap_id .agency-list{
+    max-height:55vh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
 }
+
+@media (max-width: 480px){
+  #$wrap_id .container{
+    padding:10px 8px 0;
+  }
+
+  #$wrap_id .list-box{
+    margin:0 6px;
+    padding:18px 14px;
+  }
+
+  #$wrap_id .lander-map{
+    margin:0 6px 10px;
+    border-radius:22px;
+	padding-right: 0px;
+  }
+}
+
+#$wrap_id .top-filters{
+  align-items:stretch;
+}
+@media (max-width: 480px){
+  #$wrap_id .filter-mini-btn{
+  height:100%;
+  aspect-ratio:1/1;
+  margin:0;
+  padding:0;
+  position:static;   /* مهم: top رو کلاً حذف کن */
+}
+}
+
+
+
+
 
 CSS;
 
@@ -967,7 +1029,19 @@ JS;
               <option value="qom">قم</option>
             </select>
 
-            <button id="<?php echo esc_attr($filter_btn_id); ?>" class="filter-mini-btn" aria-label="فیلتر خدمات">☰</button>
+            <button id="<?php echo esc_attr($filter_btn_id); ?>" class="filter-mini-btn" aria-label="فیلتر خدمات">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="4" y1="21" x2="4" y2="14"></line>
+                    <line x1="4" y1="10" x2="4" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="3"></line>
+                    <line x1="20" y1="21" x2="20" y2="16"></line>
+                    <line x1="20" y1="12" x2="20" y2="3"></line>
+                    <circle cx="4" cy="12" r="2"></circle>
+                    <circle cx="12" cy="10" r="2"></circle>
+                    <circle cx="20" cy="14" r="2"></circle>
+                </svg>
+            </button>
           </div>
 
           <select id="<?php echo esc_attr($city_id); ?>" style="display:none;">
