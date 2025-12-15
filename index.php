@@ -618,7 +618,7 @@ CSS;
     var map = L.map("$map_id", {
       center: [32.4279, 53.6880],
       zoom: window.innerWidth <= 992 ? 5 : 6,
-      minZoom: window.innerWidth <= 992 ? 4.8 : 5.1,
+      minZoom: window.innerWidth <= 992 ? 4.6 : 5.1,
       maxZoom: 18,
       maxBounds: IRAN_BOUNDS,
       maxBoundsViscosity: 0.75,
