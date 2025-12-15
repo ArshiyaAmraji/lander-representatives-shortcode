@@ -59,7 +59,6 @@ add_shortcode('lander_map', function () {
   height: calc(100vh - 110px);
   top: 12px;
   border-radius: 20px;
-  overflow: hidden; /* ok چون autoPan/keepInView رو فعال کردیم */
   margin: 16px;
   box-shadow: 0 0 0 6px #fff, 0 0 0 10px #e0e7ff, 0 25px 70px rgba(0,0,0,.25);
   background:#fff;
@@ -149,7 +148,6 @@ add_shortcode('lander_map', function () {
   justify-content:center;
   cursor:pointer;
   transition:all .2s ease;
-  box-shadow:0 6px 18px rgba(30,64,175,.35);
   padding:5px;
   margin-right: 5px;
   vertical-align:middle; 
@@ -538,10 +536,24 @@ add_shortcode('lander_map', function () {
   #$wrap_id .filter-mini-btn{
   height:100%;
   aspect-ratio:1/1;
-  margin:0;
+  margin-right:5px;
   padding:0;
-  position:static;   /* مهم: top رو کلاً حذف کن */
+  position:static;  
 }
+}
+/* === BeTheme Leaflet Popup FIX (FINAL) === */
+#$wrap_id .leaflet-popup-content,
+#$wrap_id .leaflet-popup-content *{
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#$wrap_id .leaflet-popup{
+  overflow: visible !important;
 }
 
 
@@ -701,15 +713,20 @@ CSS;
         '</div>';
 
       // FIX: autoPan/keepInView to prevent clipped popup under overflow:hidden
-      var popupOptions = {
-        maxWidth: 340,
-        minWidth: 280,
-        autoPan: true,
-        keepInView: true,
-        closeButton: true
-      };
+	var popupOptions = {
+	  maxWidth: 340,
+	  minWidth: 280,
+	  autoPan: true,
+	  keepInView: true,
+	  closeButton: true,
+	  sanitize: false   // ← مهم‌ترین خط
+	};
 
-      var marker = L.marker([a.lat, a.lng], { icon: bluePin }).bindPopup(popupHtml, popupOptions);
+	var popup = L.popup(popupOptions).setContent(popupHtml);
+
+	var marker = L.marker([a.lat, a.lng], { icon: bluePin });
+	marker.bindPopup(popup);
+
       marker.addTo(markersLayer);
 
       var item = document.createElement("div");
