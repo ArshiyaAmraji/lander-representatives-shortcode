@@ -40,6 +40,14 @@ add_shortcode('lander_map', function () {
   // CSS (fixed + isolated)
   // -------------------------
   $css = <<<CSS
+  
+ #$wrap_id{
+  --primary: #FFA400;
+  --primary-soft: rgba(255,164,0,.15);
+  --dark: #140E4A;
+  --dark-soft: rgba(20,14,74,.12);
+}
+
 /* ===== Lander Map (isolated) ===== */
 #$wrap_id{
   font-family: 'Vazirmatn', sans-serif;
@@ -73,7 +81,7 @@ add_shortcode('lander_map', function () {
   height: calc(100vh - 78px);
   display:flex;
   flex-direction:column;
-  min-width:0; /* مهم برای flex */
+  min-width:0; 
 
 }
 
@@ -89,7 +97,6 @@ add_shortcode('lander_map', function () {
 }
 
 #$wrap_id .list-box h2{
-  color:#1e40af;
   text-align:center;
   font-size:28px;
   margin:0 0 20px;
@@ -140,8 +147,6 @@ add_shortcode('lander_map', function () {
   height:42px;
   min-width:42px;
   border-radius:12px;
-  background:linear-gradient(135deg,#1e40af,#1d4ed8);
-  border:2px solid #1e40af;
   color:#fff;
   display:flex;
   align-items:center;
@@ -152,7 +157,7 @@ add_shortcode('lander_map', function () {
   margin-right: 5px;
   vertical-align:middle; 
   line-height:1;
-}
+  background-color: var(--dark);}
 
 #<?php echo $wrap_id; ?> .filter-mini-btn svg{
   width:20px;
@@ -163,6 +168,7 @@ add_shortcode('lander_map', function () {
 #<?php echo $wrap_id; ?> .filter-mini-btn:hover{
   transform:translateY(-1px);
   box-shadow:0 10px 26px rgba(30,64,175,.45);
+  background-color: var(--dark);
 }
 
 #<?php echo $wrap_id; ?> .filter-mini-btn:active{
@@ -177,18 +183,19 @@ add_shortcode('lander_map', function () {
   padding:6px;
   border-radius:16px;
   border:none;
-  background:linear-gradient(135deg,#10b981,#059669);
-  color:#fff;
   font-weight:500;
-  font-size:13px;
+  font-size: 80%;
   cursor:pointer;
-  box-shadow:0 10px 30px rgba(16,185,129,.25);
+  box-shadow:0 10px 30px;
   transition:.18s;
   height:30px;
 }
 #$wrap_id .nearest-inline-btn:hover{
   transform:translateY(-2px);
-  box-shadow:0 14px 35px rgba(16,185,129,.45);
+  box-shadow:0 14px 25px;
+  background-color: #140E4A;
+  color: #fff;
+
 }
 #$wrap_id .nearest-inline-btn:disabled{ opacity:.7; cursor:not-allowed; }
 
@@ -215,7 +222,7 @@ add_shortcode('lander_map', function () {
 
 #$wrap_id .agency-item{
   background:#f1f5f9;
-  border-right:6px solid #3b82f6;
+  border-right:6px solid var(--dark);
   padding:10px;
   margin:18px 0;
   border-radius:16px;
@@ -225,11 +232,10 @@ add_shortcode('lander_map', function () {
 }
 #$wrap_id .agency-item:hover{
   transform:translateY(-3px);
-  background:#e0f2fe;
-  box-shadow:0 12px 30px rgba(59,130,246,.25);
+  background: var(--primary-soft);
+  box-shadow:0 12px 30px rgba(255,164,0,.35);
 }
 #$wrap_id .agency-item strong{
-  color:#1e40af;
   font-size:19px;
   display:block;
   margin:0 0 6px;
@@ -238,13 +244,14 @@ add_shortcode('lander_map', function () {
 #$wrap_id .activity-badge{
   display:inline-block;
   width:auto;
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   color:#fff;
-  padding:4px 10px;
   border-radius:14px;
-  margin:6px 0 10px;
   white-space:nowrap;
+  background-color: var(--dark);  
+  padding: 0px 10px 0px 10px;
+  margin-bottom: 5px;
 }
 
 #$wrap_id .agency-address{ font-size:14px; color:#334155; }
@@ -290,23 +297,22 @@ add_shortcode('lander_map', function () {
 }
 
 #$wrap_id .agency-item.nearest-one{
-  background:linear-gradient(135deg,#10b981,#059669) !important;
-  color:#fff !important;
-  border-right:8px solid #41806f !important;
   transform:translateY(-4px) scale(1.01);
   position:relative;
   overflow:hidden;
+  background: linear-gradient(135deg, var(--primary), #ffb733) !important;
+  color: var(--dark) !important;
+  border-right:8px solid var(--dark) !important;
 }
 #$wrap_id .agency-item.nearest-one strong,
 #$wrap_id .agency-item.nearest-one .agency-address,
-#$wrap_id .agency-item.nearest-one .phone-link{ color:#fff !important; }
+#$wrap_id .agency-item.nearest-one .phone-link{ color: var(--dark) !important; }
 
 /* Map hint */
 #$wrap_id .map-hint{
   position:absolute;
   top:16px;
   right:16px;
-  background:rgba(30,64,175,.95);
   color:#fff;
   padding:5px 10px;
   border-radius:16px;
@@ -317,6 +323,7 @@ add_shortcode('lander_map', function () {
   user-select:none;
   pointer-events:none;
   border:1px solid rgba(255,255,255,.2);
+  background-color: #140E4A;
 }
 
 /* Leaflet popup tweaks */
@@ -329,24 +336,24 @@ add_shortcode('lander_map', function () {
   font-family:'Vazirmatn', sans-serif;
 }
 #$wrap_id .popup-content h4{
-  color:#1e40af;
   margin:0 0 14px;
   font-size:19px;
   font-weight:900;
+  color: var(--dark);
 }
 #$wrap_id .neshan-btn{
   display:block;
   margin:18px auto 0;
   padding:10px 30px;
-  background:#10b981;
-  color:#fff !important;
   text-decoration:none;
   border-radius:14px;
   font-weight:700;
   font-size:15px;
   transition:.18s;
+  background: linear-gradient(135deg, var(--primary), #ffb733);
+  color: var(--dark) !important;
 }
-#$wrap_id .neshan-btn:hover{ background:#0d9a6e; transform:translateY(-2px); }
+#$wrap_id .neshan-btn:hover{ background: var(--primary); transform:translateY(-2px); }
 
 #$wrap_id .leaflet-popup-content-wrapper{
   background:#fff !important;
@@ -669,7 +676,7 @@ CSS;
 
 
     var bluePin = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
       shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
       iconSize: [25,41],
       iconAnchor: [12,41],
@@ -751,7 +758,7 @@ CSS;
       item.className = "agency-item";
       item.innerHTML =
         "<strong>"+ title +"</strong>" +
-        '<div class="activity-badge" style="background:'+ getTypeColor(a.type) +'">' + (a.type||"") + "</div>" +
+        '<div class="activity-badge">' + (a.type||"") + "</div>" +
         '<div class="agency-address">' + (a.addr||"") + "</div>" +
         '<div class="phone-section">' + getPhoneHtml(a.phone) + "</div>";
 
@@ -763,6 +770,16 @@ CSS;
           }, 500);
         }
       });
+	  
+	  var agencyPin = L.icon({
+		  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+		  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+		  iconSize:[25,41],
+		  iconAnchor:[12,41],
+		  popupAnchor:[1,-34],
+		  shadowSize:[41,41]
+		});
+
 
       agencyMarkers.push({
         marker: marker,
