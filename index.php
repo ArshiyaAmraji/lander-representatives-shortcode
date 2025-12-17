@@ -1,5 +1,5 @@
 <?php
-
+/**
  * Shortcode: [lander_map]
  * Clean + isolated (BeTheme/BeBuilder friendly)
  */
@@ -626,7 +626,7 @@ CSS;
     var provinceSelect = document.getElementById("$prov_id");
     var citySelect = document.getElementById("$city_id");
     var searchBox = document.getElementById("$search_id");
-
+	var currentProvinceKey = "";
     var filterBtn = document.getElementById("$filter_btn_id");
     var modal = document.getElementById("$modal_id");
     var closeService = document.getElementById("$close_id");
@@ -639,10 +639,8 @@ CSS;
 
     var agencyMarkers = [];
     var userMarker = null;
-    var currentProvince = "";
     var currentCity = "";
     var currentService = "";
-    var currentProvinceKey = "";
     var markersLayer;
 
     var IRAN_BOUNDS = [[20,38],[44,70]];
@@ -794,7 +792,9 @@ CSS;
         marker: marker,
         element: item,
         text: (a.city+" "+(a.name||"")+" "+(a.addr||"")+" "+(a.phone||"")+" "+(a.type||"")).toLowerCase(),
-        type: a.type || ""
+        type: a.type || "",
+		province: a.province || "",
+		city: a.city || ""
       });
 
       listContainer.appendChild(item);
@@ -802,35 +802,49 @@ CSS;
 
     var provinceMap = {
       tehran: "تهران",
-      alborz: "کرج",
-      khorasan: "مشهد",
+      alborz: "البرز",
+      khorasanerazavi: "خراسانرضوی",
       esfahan: "اصفهان",
       fars: "شیراز",
       azerbaijan: "تبریز",
       gilan: "رشت",
-      qom: "قم"
+      qom: "قم",
+	  kerman: "کرمان",
+	  hormozgan: "هرمزگان",
+	  yazd: "یزد",
     };
 
     var citiesByProvince = {
       tehran: [
         { id:"tehran", label:"تهران" }, { id:"rey", label:"ری" }, { id:"eslamshahr", label:"اسلامشهر" },
         { id:"shahrqods", label:"شهرقدس" }, { id:"shahriar", label:"شهریار" }, { id:"malard", label:"ملارد" },
-        { id:"robatkarim", label:"رباط کریم" }, { id:"varamin", label:"ورامین" }
+        { id:"robatkarim", label:"رباط کریم" }, { id:"varamin", label:"ورامین" }, {id:"parand", label:"پرند"},{id:"andisheh", label: "اندیشه"},
       ],
       alborz: [
-        { id:"karaj", label:"کرج" }, { id:"fardis", label:"فردیس" }, { id:"nazarabad", label:"نظرآباد" }, { id:"hashtgerd", label:"هشتگرد" }
-      ]
+        { id:"karaj", label:"کرج" }, { id:"fardis", label:"فردیس" }, { id:"nazarabad", 		  label:"نظرآباد" }, { id:"hashtgerd", label:"هشتگرد" }, 
+      ],
+	  kerman: [
+	  {id:"bam", label:"بم"},
+	  ],
+	  hormozgan: [
+	  {id:"bandarabbas", label:"بندرعباس"},
+	  ],
+	  yazd:[{id:"yazd", label:"یزد"}],
+	  khorasanerazavi:[{id:"mashhad", label:"مشهد"}]
     };
 
     var configZoom = {
       tehran:{ center:[35.7210,51.3890], zoom:9 },
       alborz:{ center:[35.864412,50.869161], zoom:11 },
-      khorasan:{ center:[36.2970,59.6062], zoom:12 },
+      khorasanerazavi:{ center:[36.2970,59.6062], zoom:12 },
       esfahan:{ center:[32.6539,51.6660], zoom:12 },
       fars:{ center:[29.5918,52.5833], zoom:12 },
       azerbaijan:{ center:[38.0667,46.2833], zoom:12 },
       gilan:{ center:[37.2808,49.5832], zoom:12 },
-      qom:{ center:[34.6399,50.8759], zoom:12 }
+      qom:{ center:[34.6399,50.8759], zoom:12 },
+	  kerman: {center: [30.29069965139118, 57.05827952244834], zoom:12},
+	  hormozgan: { center:[27.1832, 56.2666], zoom:10 },
+	  yazd: {center:[31.958669094791038, 54.35245293609361], zoom:10},
     };
 
     var cityZoom = {
@@ -842,10 +856,17 @@ CSS;
       malard:{ center:[35.6670,50.9789], zoom:13 },
       robatkarim:{ center:[35.4849,51.0826], zoom:12 },
       varamin:{ center:[35.3256,51.6470], zoom:12 },
+	  parand:{center:[35.4848712249257,50.948292183922206], zoom:12},
+	  andisheh: {center:[35.700622325288265,51.027298930509176], zoom:12},
+	  
       karaj:{ center:[35.8354,50.9604], zoom:12 },
       fardis:{ center:[35.7216,50.9759], zoom:13 },
       nazarabad:{ center:[35.9560,50.6095], zoom:13 },
-      hashtgerd:{ center:[35.9614,50.6786], zoom:13 }
+      hashtgerd:{ center:[35.9614,50.6786], zoom:13 },
+	  bam: {center:[29.095521522037057, 58.35615102765471], zoom:13},
+	  bandarabbas: {center:[27.194233047023797, 56.28802481184466], zoom:13},
+	  yazd: {center:[31.896371777958386, 54.35682558893884], zoom:13},
+	  mashhad:{ center:[36.2970,59.6062], zoom:13 },
     };
 
     function filterList(){
@@ -855,16 +876,10 @@ CSS;
       agencyMarkers.forEach(function(obj){
         var fullText = obj.text || (obj.element.textContent || "").toLowerCase();
         var matchesSearch = fullText.indexOf(term) !== -1;
-        var matchesProvince =
-  !currentProvinceKey || a.province === currentProvinceKey;
-
-        var cityLabel = "";
-        var arr = citiesByProvince[currentProvinceKey] || [];
-        for(var i=0;i<arr.length;i++){
-          if(arr[i].id === currentCity){ cityLabel = arr[i].label; break; }
-        }
+		var matchesProvince =
+		  !currentProvinceKey || obj.province === currentProvinceKey;
 		var matchesCity =
-		  !currentCity || a.city === currentCity;
+		  !currentCity || obj.city === currentCity;
 
         var matchesService = !currentService || (obj.type || "").indexOf(currentService) !== -1;
 
@@ -879,8 +894,7 @@ CSS;
 
       if(!key){
         currentProvinceKey = "";
-        currentProvince = "";
-        currentCity = "";
+		currentCity = "";
         updateMapView(map);
         citySelect.innerHTML = '<option value="">همه شهرستان‌ها</option>';
         citySelect.style.display = "none";
@@ -889,8 +903,6 @@ CSS;
       }
 
       currentProvinceKey = key;
-      currentProvince = provinceMap[key] || "";
-
       if(configZoom[key]) map.setView(configZoom[key].center, configZoom[key].zoom, { animate:true });
 
       var cities = citiesByProvince[key];
@@ -956,7 +968,6 @@ CSS;
 
     // Nearest
     function resetFilters(){
-      currentProvince = "";
       currentCity = "";
       currentProvinceKey = "";
       currentService = "";
@@ -1084,12 +1095,16 @@ JS;
               <option value="">همه استان‌ها</option>
               <option value="tehran">تهران</option>
               <option value="alborz">البرز</option>
-              <option value="khorasan">مشهد</option>
+              <option value="khorasanerazavi">خراسان رضوی</option>
               <option value="esfahan">اصفهان</option>
               <option value="fars">شیراز</option>
               <option value="azerbaijan">تبریز</option>
               <option value="gilan">رشت</option>
               <option value="qom">قم</option>
+			  <option value="kerman">کرمان</option>
+			  <option value="hormozgan">هرمزگان</option>
+			  <option value="yazd">یزد</option>
+
             </select>
 
             <button id="<?php echo esc_attr($filter_btn_id); ?>" class="filter-mini-btn" aria-label="فیلتر خدمات">
@@ -1165,16 +1180,15 @@ JS;
     while ($q->have_posts()) {
       $q->the_post();
 		$agencies[] = [
-			'name'     => get_the_title(),
-			'province' => get_post_meta(get_the_ID(),'province', true), // 👈 اضافه شد
-			'city'     => get_post_meta(get_the_ID(),'city', true),
-			'lat'      => (float) get_post_meta(get_the_ID(),'lat', true),
-			'lng'      => (float) get_post_meta(get_the_ID(),'lng', true),
-			'addr'     => get_post_meta(get_the_ID(),'address', true),
-			'phone'    => get_post_meta(get_the_ID(),'phone', true),
-			'type'     => get_post_meta(get_the_ID(),'services', true),
+		  'name'     => get_the_title(),
+		  'province' => get_post_meta(get_the_ID(),'province', true), // 👈 اضافه شد
+		  'city'     => get_post_meta(get_the_ID(),'city', true),
+		  'lat'      => (float) get_post_meta(get_the_ID(),'lat', true),
+		  'lng'      => (float) get_post_meta(get_the_ID(),'lng', true),
+		  'addr'     => get_post_meta(get_the_ID(),'address', true),
+		  'phone'    => get_post_meta(get_the_ID(),'phone', true),
+		  'type'     => get_post_meta(get_the_ID(),'services', true),
 		];
-
     }
     wp_reset_postdata();
     ?>
