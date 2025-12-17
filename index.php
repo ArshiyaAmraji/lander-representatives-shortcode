@@ -805,13 +805,15 @@ CSS;
       alborz: "البرز",
       khorasanerazavi: "خراسانرضوی",
       esfahan: "اصفهان",
-      fars: "شیراز",
+      fars: "فارس",
       azerbaijan: "تبریز",
       gilan: "رشت",
       qom: "قم",
 	  kerman: "کرمان",
 	  hormozgan: "هرمزگان",
 	  yazd: "یزد",
+	  hamedan: "همدان",
+	  mazandaran: "مازندران",
     };
 
     var citiesByProvince = {
@@ -824,13 +826,25 @@ CSS;
         { id:"karaj", label:"کرج" }, { id:"fardis", label:"فردیس" }, { id:"nazarabad", 		  label:"نظرآباد" }, { id:"hashtgerd", label:"هشتگرد" }, 
       ],
 	  kerman: [
-	  {id:"bam", label:"بم"},
+	  {id:"bam", label:"بم"},{id:"sirjan", label:"سیرجان"},{id:"jiroft", label:"جیرفت"},
 	  ],
 	  hormozgan: [
 	  {id:"bandarabbas", label:"بندرعباس"},
 	  ],
 	  yazd:[{id:"yazd", label:"یزد"}],
-	  khorasanerazavi:[{id:"mashhad", label:"مشهد"}]
+	  khorasanerazavi:[{id:"mashhad", label:"مشهد"}],
+	  fars:[
+	  {id:"shiraz", label:"شیراز"},
+	  ],
+	  hamedan:[
+	  {id:"hamedan", label:"همدان"}, {id:"toyserkan", label:"تویسرکان"},
+	  ],
+	  mazandaran: [
+	  {id:"amol", label:"آمل"},
+	  ],
+	  gilan: [
+	  {id:"rasht", label:"رشت"},
+	  ],
     };
 
     var configZoom = {
@@ -838,13 +852,15 @@ CSS;
       alborz:{ center:[35.864412,50.869161], zoom:11 },
       khorasanerazavi:{ center:[36.2970,59.6062], zoom:12 },
       esfahan:{ center:[32.6539,51.6660], zoom:12 },
-      fars:{ center:[29.5918,52.5833], zoom:12 },
+      fars:{ center:[29.330184263972598,53.22394905665354], zoom:8 },
       azerbaijan:{ center:[38.0667,46.2833], zoom:12 },
-      gilan:{ center:[37.2808,49.5832], zoom:12 },
+      gilan:{ center:[37.36570654382224,49.48652442123952], zoom:10 },
       qom:{ center:[34.6399,50.8759], zoom:12 },
 	  kerman: {center: [30.29069965139118, 57.05827952244834], zoom:12},
 	  hormozgan: { center:[27.1832, 56.2666], zoom:10 },
 	  yazd: {center:[31.958669094791038, 54.35245293609361], zoom:10},
+	  hamedan: {center: [35.000323761857686,48.65557789322659], zoom:10},
+	  mazandaran: {center: [36.36901211005802,51.89136642871176], zoom:9},
     };
 
     var cityZoom = {
@@ -864,9 +880,16 @@ CSS;
       nazarabad:{ center:[35.9560,50.6095], zoom:13 },
       hashtgerd:{ center:[35.9614,50.6786], zoom:13 },
 	  bam: {center:[29.095521522037057, 58.35615102765471], zoom:13},
+	  sirjan: {center:[29.446786662474537,55.67094176949499], zoom:13},
+	  jiroft: {center:[28.670601320665284,57.737524337292], zoom:13},
 	  bandarabbas: {center:[27.194233047023797, 56.28802481184466], zoom:13},
 	  yazd: {center:[31.896371777958386, 54.35682558893884], zoom:13},
 	  mashhad:{ center:[36.2970,59.6062], zoom:13 },
+	  shiraz:{ center: [29.60607600834959,52.53770627727468], zoom: 13},
+	  hamedan:{ center: [34.802812766244756,48.51379815729629], zoom: 13},
+	  toyserkan: {center: [34.548274515511736,48.44794713928573], zoom: 13},
+	  amol: {center: [36.472999300347965,52.35016788246736], zoom: 12},
+	  rasht: {center: [37.28164770555185,49.58442908435683], zoom:12},
     };
 
     function filterList(){
@@ -1097,13 +1120,15 @@ JS;
               <option value="alborz">البرز</option>
               <option value="khorasanerazavi">خراسان رضوی</option>
               <option value="esfahan">اصفهان</option>
-              <option value="fars">شیراز</option>
+              <option value="fars">فارس</option>
               <option value="azerbaijan">تبریز</option>
-              <option value="gilan">رشت</option>
+              <option value="gilan">گیلان</option>
               <option value="qom">قم</option>
 			  <option value="kerman">کرمان</option>
 			  <option value="hormozgan">هرمزگان</option>
 			  <option value="yazd">یزد</option>
+			  <option value="hamedan">همدان</option>
+		      <option value="mazandaran">مازندران</option>
 
             </select>
 
