@@ -68,7 +68,7 @@ add_shortcode('lander_map', function () {
   top: 12px;
   border-radius: 20px;
   margin: 16px;
-  box-shadow: 0 0 0 6px #fff, 0 0 0 10px #e0e7ff, 0 25px 70px rgba(0,0,0,.25);
+  box-shadow: 0 0 0 6px #fff, 0 0 0 10px rgba(255,164,0,.15), 0 25px 70px rgba(255,164,0,.15);
   background:#fff;
   position:relative;
   z-index:1;
@@ -81,7 +81,7 @@ add_shortcode('lander_map', function () {
   height: calc(100vh - 78px);
   display:flex;
   flex-direction:column;
-  min-width:0; 
+  min-width:0; /* مهم برای flex */
 
 }
 
@@ -179,7 +179,7 @@ add_shortcode('lander_map', function () {
 
 #$wrap_id .nearest-inline-btn{
   width:100%;
-  margin:0 0 7px;
+  margin:0 0 7px 0px;
   padding:6px;
   border-radius:16px;
   border:none;
@@ -202,15 +202,23 @@ add_shortcode('lander_map', function () {
 #$wrap_id .desktop-nearest{ display:block; }
 #$wrap_id .mobile-actions{ display:none; gap:10px; }
 #$wrap_id .go-to-map-btn{
-  border-radius:16px;
-  border:1px solid #1e40af;
-  background:#fff;
-  color:#1e40af;
-  font-size:10px;
-  font-weight:600;
   height:30px;
+  padding:0 12px;
+  border-radius:16px;
+  border:1px solid var(--primary);
+  background: var(--primary);
+  color: var(--dark);
+  font-size:80%;
+  font-weight:700;
   cursor:pointer;
   font-family:'Vazirmatn', sans-serif;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:auto;        /* ← خیلی مهم */
+  min-width:unset;  /* ← اطمینان */
 }
 
 #$wrap_id .agency-list{
@@ -242,17 +250,20 @@ add_shortcode('lander_map', function () {
 }
 
 #$wrap_id .activity-badge{
-  display:inline-block;
-  width:auto;
+  display:inline-flex;            /* به‌جای inline-block */
+  align-items:center;
+  max-width:100%;
+  min-width: 0px;
+
   font-size:10px;
   font-weight:700;
   color:#fff;
+  background-color: var(--dark);
   border-radius:14px;
-  white-space:nowrap;
-  background-color: var(--dark);  
-  padding: 0px 10px 0px 10px;
-  margin-bottom: 5px;
+  padding:2px 10px;
+  margin-bottom:5px;
 }
+
 
 #$wrap_id .agency-address{ font-size:14px; color:#334155; }
 
@@ -407,13 +418,12 @@ add_shortcode('lander_map', function () {
 #$wrap_id .service-box h3{
   font-size:18px;
   margin:0;
-  color:#1e3a8a;
   font-weight:900;
 }
 #$wrap_id .close-service{
   width:36px;
   height:36px;
-  background:linear-gradient(90deg,#3b82f6,#1d4ed8);
+  background:var(--dark);
   color:#fff;
   border-radius:10px;
   border:none;
@@ -429,7 +439,7 @@ add_shortcode('lander_map', function () {
   width:100%;
   padding:12px 14px;
   border-radius:12px;
-  border:2px solid #e2e8f0;
+  border:2px solid var(dark);
   background:#fff;
   font-size:15px;
   box-shadow:0 8px 20px rgba(30,64,175,.03);
@@ -441,8 +451,8 @@ add_shortcode('lander_map', function () {
   padding:12px 16px;
   border-radius:12px;
   border:none;
-  background:linear-gradient(90deg,#3b82f6,#1d4ed8);
-  color:#fff;
+  background:var(--dark);
+  color:#00000ff;
   font-weight:800;
   cursor:pointer;
   box-shadow:0 12px 30px rgba(29,78,216,.18);
@@ -475,8 +485,8 @@ add_shortcode('lander_map', function () {
   }
   #$wrap_id .lander-map{
     order:2;
-    height:75vh;
-    min-height:75vh;
+    height:65vh;
+    min-height:65vh;
     border-radius:28px;
   }
   #$wrap_id .desktop-nearest{ display:none; }
@@ -495,8 +505,9 @@ add_shortcode('lander_map', function () {
     width:fit-content !important;
     min-width:140px;
   }
-  #$wrap_id .phone-link{ font-size:11px !important; font-weight:400 !important; margin-top:5px; }
-  #$wrap_id .activity-badge{ font-size:8px !important; .padding: 0px }
+  #$wrap_id .phone-link{ font-size:10px !important; font-weight:400 !important; margin-top:0px; padding-right: -2px;}
+  .phone-icon{ width:14px !important; height:14px !important; stroke:currentColor; }
+  #$wrap_id .activity-badge{ font-size:6.5px !important; .padding: 0px; margin-top: 5px; }
 }
 
 @media (max-width: 360px){
@@ -717,13 +728,13 @@ CSS;
     function getPhoneHtml(phone){
       var phones = (phone || "").split("/").map(function(p){ return p.trim(); }).filter(Boolean);
       var html = "";
-      phones.forEach(function(p, idx){
-        if(idx>0) html += ' <span class="phone-separator">•</span> ';
-        html += '<a href="tel:'+p+'" class="phone-link">' +
-                  '<svg class="phone-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">' +
-                    '<path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>' +
-                  '</svg>' + p + '</a>';
-      });
+		phones.forEach(function(p){
+		  html += '<a href="tel:'+p+'" class="phone-link">' +
+					'<svg class="phone-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">' +
+					  '<path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>' +
+					'</svg>' + p + '</a>';
+		});
+
       return html;
     }
 
