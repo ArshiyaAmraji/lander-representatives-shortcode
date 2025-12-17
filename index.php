@@ -707,7 +707,7 @@ CSS;
 
 
     var bluePin = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
       shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
       iconSize: [25,41],
       iconAnchor: [12,41],
@@ -804,7 +804,7 @@ CSS;
       tehran: "تهران",
       alborz: "البرز",
       khorasanerazavi: "خراسانرضوی",
-      esfahan: "اصفهان",
+      esfehan: "اصفهان",
       fars: "فارس",
       azerbaijan: "تبریز",
       gilan: "رشت",
@@ -845,13 +845,16 @@ CSS;
 	  gilan: [
 	  {id:"rasht", label:"رشت"},
 	  ],
+	  esfehan: [
+	  {id:"esfehan", label:"اصفهان"},
+	  ],
     };
 
     var configZoom = {
       tehran:{ center:[35.7210,51.3890], zoom:9 },
       alborz:{ center:[35.864412,50.869161], zoom:11 },
       khorasanerazavi:{ center:[36.2970,59.6062], zoom:12 },
-      esfahan:{ center:[32.6539,51.6660], zoom:12 },
+      esfehan:{ center:[33.29489106435352,52.511744367139414], zoom:10 },
       fars:{ center:[29.330184263972598,53.22394905665354], zoom:8 },
       azerbaijan:{ center:[38.0667,46.2833], zoom:12 },
       gilan:{ center:[37.36570654382224,49.48652442123952], zoom:10 },
@@ -890,6 +893,7 @@ CSS;
 	  toyserkan: {center: [34.548274515511736,48.44794713928573], zoom: 13},
 	  amol: {center: [36.472999300347965,52.35016788246736], zoom: 12},
 	  rasht: {center: [37.28164770555185,49.58442908435683], zoom:12},
+	  esfehan: {center: [32.651244495962274,51.66711584730038], zoom:11},
     };
 
     function filterList(){
@@ -1119,7 +1123,7 @@ JS;
               <option value="tehran">تهران</option>
               <option value="alborz">البرز</option>
               <option value="khorasanerazavi">خراسان رضوی</option>
-              <option value="esfahan">اصفهان</option>
+              <option value="esfehan">اصفهان</option>
               <option value="fars">فارس</option>
               <option value="azerbaijan">تبریز</option>
               <option value="gilan">گیلان</option>
