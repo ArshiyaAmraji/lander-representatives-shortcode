@@ -85,7 +85,7 @@ add_shortcode('lander_map', function () {
   top: 12px;
   border-radius: 20px;
   margin: 16px;
-  box-shadow: 0 0 0 6px #fff, 0 0 0 10px rgba(255,164,0,.15), 0 25px 70px rgba(255,164,0,.15);
+  box-shadow: 0 0 0 6px #fff, 0 0 0 10px rgba(255,164,0,.25), 0 25px 70px rgba(255,164,0,.25);
   background:#fff;
   position:relative;
   z-index:1;
@@ -229,7 +229,7 @@ add_shortcode('lander_map', function () {
   border-radius:16px;
   border:1px solid var(--primary);
   background: var(--primary);
-  color: var(--dark);
+  color: #fff;
   font-size:80%;
   font-weight:700;
   cursor:pointer;
@@ -239,8 +239,8 @@ add_shortcode('lander_map', function () {
   align-items:center;
   justify-content:center;
 
-  width:auto;        /* ← خیلی مهم */
-  min-width:unset;  /* ← اطمینان */
+  width:auto;
+  min-width:unset;  
 }
 
 #$wrap_id .agency-list{
@@ -260,6 +260,17 @@ add_shortcode('lander_map', function () {
   transition:.25s;
   box-shadow:0 4px 15px rgba(0,0,0,.05);
 }
+#$wrap_id .agency-item.active {
+  background-color: var(--primary-soft);
+  border: 1px solid var(--primary-soft);
+  box-shadow: 0 8px 20px rgba(99,102,241,.15);
+  border-right: 4px solid var(--primary);
+}
+
+#$wrap_id .agency-item.active .activity-badge {
+	background-color: var(--primary);
+}
+
 #$wrap_id .agency-item:hover{
   transform:translateY(-3px);
   background: var(--primary-soft);
@@ -276,7 +287,6 @@ add_shortcode('lander_map', function () {
   align-items:center;
   max-width:100%;
   min-width: 0px;
-
   font-size:10px;
   font-weight:700;
   color:#fff;
@@ -315,27 +325,31 @@ add_shortcode('lander_map', function () {
 
 #$wrap_id .distance-tag{
   display:inline-block;
-  font-size:12px;
-  font-weight:800;
-  padding:3px 12px;
+  font-size:11px;
+  font-weight:600;
+  padding:0px 10px 0px 10px;
   border-radius:12px;
   margin:8px 6px 4px 0;
   backdrop-filter:blur(4px);
+  background-color: var(--primary);
+  color: #fff;
 }
 #$wrap_id .distance-tag.nearest{
   background:#e2e8f0;
   color:#1e40af;
   font-size:11px;
   font-weight:600;
+  margin-bottom:10px;
+  padding:0px 10px 0px 10px;
 }
 
 #$wrap_id .agency-item.nearest-one{
-  transform:translateY(-4px) scale(1.01);
   position:relative;
   overflow:hidden;
-  background: linear-gradient(135deg, var(--primary), #ffb733) !important;
-  color: var(--dark) !important;
-  border-right:8px solid var(--dark) !important;
+  background-color: var(--primary-soft);
+  border: 1px solid var(--primary-soft);
+  box-shadow: 0 8px 20px rgba(99,102,241,.15);
+  border-right: 4px solid var(--primary);
 }
 #$wrap_id .agency-item.nearest-one strong,
 #$wrap_id .agency-item.nearest-one .agency-address,
@@ -359,7 +373,6 @@ add_shortcode('lander_map', function () {
   background-color: #140E4A;
 }
 
-/* Leaflet popup tweaks */
 #$wrap_id .popup-content{
   text-align:center;
   padding:20px 22px;
@@ -398,7 +411,7 @@ add_shortcode('lander_map', function () {
 #$wrap_id .leaflet-popup-content{ margin:0 !important; overflow:visible !important; }
 #$wrap_id .leaflet-popup-pane{ z-index: 700 !important; }
 #$wrap_id .leaflet-control-attribution{
-  font-size:10px; /* قبلاً 2px بود که خیلی ریز می‌شد */
+	display: none !important;
 }
 
 /* Service modal */
@@ -581,7 +594,6 @@ add_shortcode('lander_map', function () {
   position:static;  
 }
 }
-/* === BeTheme Leaflet Popup FIX (FINAL) === */
 #$wrap_id .leaflet-popup-content,
 #$wrap_id .leaflet-popup-content *{
   height: auto !important;
@@ -600,7 +612,18 @@ add_shortcode('lander_map', function () {
   font-family: 'Vazirmatn', sans-serif !important;
 }
 
+#$wrap_id .agency-filter {
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
 
+#$wrap_id .agency-filter select {
+  border: none;
+  background: transparent;
+  font-size: 15px;
+}
 
 
 CSS;
@@ -697,7 +720,6 @@ CSS;
 	  __rt = setTimeout(function () {
 		var w = window.innerWidth;
 
-		// فقط وقتی عرض تغییر کرد (چرخش گوشی / تغییر واقعی سایز)
 		if (w !== __lastWidth) {
 		  __lastWidth = w;
 		  updateMapView(map);
@@ -751,7 +773,7 @@ CSS;
 	  autoPan: true,
 	  keepInView: true,
 	  closeButton: true,
-	  sanitize: false   // ← مهم‌ترین خط
+	  sanitize: false,
 	};
 
 	var popup = L.popup(popupOptions).setContent(popupHtml);
@@ -806,7 +828,6 @@ CSS;
       khorasanerazavi: "خراسانرضوی",
       esfehan: "اصفهان",
       fars: "فارس",
-      azerbaijan: "تبریز",
       gilan: "رشت",
       qom: "قم",
 	  kerman: "کرمان",
@@ -814,31 +835,44 @@ CSS;
 	  yazd: "یزد",
 	  hamedan: "همدان",
 	  mazandaran: "مازندران",
+	  khoozestan: "خوزستان",
+	  qazvin: "قزوین",
+	  zanjan: "زنجان",
+	  ardebil: "اردبیل",
+	  azarbayjanegharbi: "آذربایجان غربی",
     };
 
     var citiesByProvince = {
       tehran: [
-        { id:"tehran", label:"تهران" }, { id:"rey", label:"ری" }, { id:"eslamshahr", label:"اسلامشهر" },
-        { id:"shahrqods", label:"شهرقدس" }, { id:"shahriar", label:"شهریار" }, { id:"malard", label:"ملارد" },
-        { id:"robatkarim", label:"رباط کریم" }, { id:"varamin", label:"ورامین" }, {id:"parand", label:"پرند"},{id:"andisheh", label: "اندیشه"},
-      ],
+        { id:"tehran", label:"تهران" }, { id:"rey", label:"ری" }, { id:"eslamshahr",                 label:"اسلامشهر"},{id:"pardis",label:"پردیس"},
+        { id:"shahrqods", label:"شهرقدس" }, { id:"shahriar", label:"شهریار" }, {                     id:"malard", label:"ملارد" },
+        { id:"robatkarim", label:"رباط کریم" }, { id:"varamin", label:"ورامین" },                   {id:"parand", label:"پرند"},{id:"andisheh", label: "اندیشه"},
+        ],
+	  
       alborz: [
-        { id:"karaj", label:"کرج" }, { id:"fardis", label:"فردیس" }, { id:"nazarabad", 		  label:"نظرآباد" }, { id:"hashtgerd", label:"هشتگرد" }, 
+        { id:"karaj", label:"کرج" }, { id:"fardis", label:"فردیس" }, { id:"nazarabad", 		      label:"نظرآباد" }, { id:"hashtgerd", label:"هشتگرد" }, 
       ],
+	  
 	  kerman: [
 	  {id:"bam", label:"بم"},{id:"sirjan", label:"سیرجان"},{id:"jiroft", label:"جیرفت"},
 	  ],
+	  
 	  hormozgan: [
-	  {id:"bandarabbas", label:"بندرعباس"},
+	  {id:"bandarabbas", label:"بندرعباس"},{id:"kish", label:"کیش"},
 	  ],
-	  yazd:[{id:"yazd", label:"یزد"}],
-	  khorasanerazavi:[{id:"mashhad", label:"مشهد"}],
+	  
+	  yazd:[{id:"yazd", label:"یزد"}, {id:"ardakan", label:"اردکان"}],
+	  
+	  khorasanerazavi:[{id:"mashhad", label:"مشهد"}, {id:"taybad", label:"تایباد"},		           {id:"feizabad", label:"فیض آباد"},],
+	  
 	  fars:[
-	  {id:"shiraz", label:"شیراز"},
+	  {id:"shiraz", label:"شیراز"},{id:"kazeroon", label:"کازرون"},
 	  ],
+	  
 	  hamedan:[
 	  {id:"hamedan", label:"همدان"}, {id:"toyserkan", label:"تویسرکان"},
 	  ],
+	  
 	  mazandaran: [
 	  {id:"amol", label:"آمل"},
 	  ],
@@ -846,27 +880,54 @@ CSS;
 	  {id:"rasht", label:"رشت"},
 	  ],
 	  esfehan: [
-	  {id:"esfehan", label:"اصفهان"},
+	  {id:"esfehan", label:"اصفهان"},{id:"shahreza", label:"شهرضا"},
 	  ],
+	  qom: [
+	  {id:"qom", label:"قم"},
+	  ],
+	  khoozestan: [
+	  {id:"dezfool", label:"دزفول"},{id:"shoosh", label:"شوش"},{id:"ahvaz", label:"اهواز"},
+	  ],
+	  qazvin: [
+	  {id:"qazvin", label:"قزوین"},
+	  ],
+	  zanjan: [
+	  {id:"zanjan", label:"زنجان"},{id:"qeydar", label:"قیدار"},
+	  ],
+	  ardebil:[
+	  {id:"ardebil", label:"اردبیل"},
+	  ],
+	  azarbayjanegharbi:[
+	  {id:"orumiye", label:"ارومیه"},
+	  ],
+	  
     };
 
+	//----------------------PROVINCE ZOOM-------------------------
     var configZoom = {
       tehran:{ center:[35.7210,51.3890], zoom:9 },
       alborz:{ center:[35.864412,50.869161], zoom:11 },
-      khorasanerazavi:{ center:[36.2970,59.6062], zoom:12 },
-      esfehan:{ center:[33.29489106435352,52.511744367139414], zoom:10 },
+      khorasanerazavi:{ center:[36.2970,59.6062], zoom:7 },
+      esfehan:{ center:[32.932318882091465,52.00935280904338], zoom:9 },
       fars:{ center:[29.330184263972598,53.22394905665354], zoom:8 },
       azerbaijan:{ center:[38.0667,46.2833], zoom:12 },
       gilan:{ center:[37.36570654382224,49.48652442123952], zoom:10 },
-      qom:{ center:[34.6399,50.8759], zoom:12 },
-	  kerman: {center: [30.29069965139118, 57.05827952244834], zoom:12},
-	  hormozgan: { center:[27.1832, 56.2666], zoom:10 },
-	  yazd: {center:[31.958669094791038, 54.35245293609361], zoom:10},
+      qom:{ center:[34.70943422823724,51.0122843929002], zoom:9 },
+	  kerman: {center: [29.568667429370336,57.306090357485004], zoom:7},
+	  hormozgan: { center:[27.1832, 56.2666], zoom:7 },
+	  yazd: {center:[31.958669094791038, 54.35245293609361], zoom:8},
 	  hamedan: {center: [35.000323761857686,48.65557789322659], zoom:10},
 	  mazandaran: {center: [36.36901211005802,51.89136642871176], zoom:9},
+	  khoozestan: {center: [31.575929607755867,49.01552134031209], zoom: 8},
+	  qazvin: {center: [36.004520357513954,49.84080162055707], zoom: 9},
+	  zanjan: {center: [36.518081702169624,48.48325475731613], zoom: 9},
+	  ardebil: {center: [38.434736294018336,47.9477794855145], zoom:8},
+	  azarbayjanegharbi: {center: [37.72172938322552,45.03512060006156], zoom: 8},
     };
 
+	//-------------------------CITY ZOOM----------------------------
     var cityZoom = {
+	  //-------------TEHRAN-------------
       tehran:{ center:[35.698,51.436], zoom:11 },
       rey:{ center:[35.3654,51.2304], zoom:14 },
       eslamshahr:{ center:[35.5466,51.2350], zoom:13 },
@@ -877,23 +938,67 @@ CSS;
       varamin:{ center:[35.3256,51.6470], zoom:12 },
 	  parand:{center:[35.4848712249257,50.948292183922206], zoom:12},
 	  andisheh: {center:[35.700622325288265,51.027298930509176], zoom:12},
+	  pardis: {center:[35.73669731040164,51.81720502887444], zoom:12},
 	  
+	  //---------------ALBORZ------------------
       karaj:{ center:[35.8354,50.9604], zoom:12 },
       fardis:{ center:[35.7216,50.9759], zoom:13 },
       nazarabad:{ center:[35.9560,50.6095], zoom:13 },
       hashtgerd:{ center:[35.9614,50.6786], zoom:13 },
+	  
+	  //--------------QAZVIN-------------------
+	  qazvin:{ center:[36.28071034482642,50.006598769039414], zoom:12},
+	  
+	  //--------------KERMAN-------------------
 	  bam: {center:[29.095521522037057, 58.35615102765471], zoom:13},
 	  sirjan: {center:[29.446786662474537,55.67094176949499], zoom:13},
 	  jiroft: {center:[28.670601320665284,57.737524337292], zoom:13},
+	  
+	  //-------------HORMOZGAN-----------------
 	  bandarabbas: {center:[27.194233047023797, 56.28802481184466], zoom:13},
+	  kish: {center:[26.533304163921784,53.972758753864525], zoom:12},
+	  
+	  //-------------YAZD---------------------
+	  ardakan: {center:[32.30622437941166,54.01605362316914], zoom:13},
 	  yazd: {center:[31.896371777958386, 54.35682558893884], zoom:13},
+	  
+	  //-------------KHORASANERAZAVI------------
 	  mashhad:{ center:[36.2970,59.6062], zoom:13 },
+	  taybad: {center: [34.73450779757883,60.778437047344056], zoom: 13},
+	  feizabad: {center: [35.02219577769688,58.78603492633741], zoom:13},
+	  
+	  //--------------FARS--------------------
 	  shiraz:{ center: [29.60607600834959,52.53770627727468], zoom: 13},
+	  kazeroon:{ center: [29.619300487837293,51.652009102419356], zoom: 13},
+	  
+	  //--------------HAMEDAN-------------------
 	  hamedan:{ center: [34.802812766244756,48.51379815729629], zoom: 13},
 	  toyserkan: {center: [34.548274515511736,48.44794713928573], zoom: 13},
+	  
+	  //--------------ZANJAN--------------------
+	  zanjan:{center: [36.677858680307835,48.50547473752863], zoom:12},
+	  qeydar:{center: [36.1212634338749,48.59169259808718], zoom:13},
+	  
 	  amol: {center: [36.472999300347965,52.35016788246736], zoom: 12},
+	  
 	  rasht: {center: [37.28164770555185,49.58442908435683], zoom:12},
-	  esfehan: {center: [32.651244495962274,51.66711584730038], zoom:11},
+	  
+	  //------------------ESFEHAN----------------
+	  esfehan: {center: [32.651244495962274,51.66711584730038], zoom:12},
+	  shahreza: {center: [32.011673153760626,51.86008126780118], zoom: 13},
+	  
+	  qom: {center: [34.64232805097019,50.88023918880319], zoom:13},
+	  
+	  //------------------KHOOZESTAN--------------------
+	  dezfool: {center: [32.378496859465855,48.40337805463966], zoom:13},
+	  shoosh: {center: [32.19981068166419,48.249096135993454], zoom:12},
+	  ahvaz: {center: [31.321985428445288,48.68239843099727], zoom:13},
+	  
+	  //--------------------ARDEBIL---------------------
+	  ardebil: {center: [38.25168400990506,48.296967309144435], zoom:13},
+	  
+	  //---------------AZARBAYJANE GHARBI---------------
+	  orumiye: {center: [37.5411340389044,45.06887592848756], zoom:11},
     };
 
     function filterList(){
@@ -930,7 +1035,7 @@ CSS;
       }
 
       currentProvinceKey = key;
-      if(configZoom[key]) map.setView(configZoom[key].center, configZoom[key].zoom, { animate:true });
+      if(configZoom[key]) map.setView(configZoom[key].center, configZoom[key].zoom, {             animate:true });
 
       var cities = citiesByProvince[key];
       if(!cities || !cities.length){
@@ -1028,7 +1133,8 @@ CSS;
 
         var badge = obj.element.querySelector(".activity-badge");
         if(badge) badge.insertAdjacentHTML("afterend", distanceText);
-        else obj.element.querySelector("strong").insertAdjacentHTML("afterend", distanceText);
+        else obj.element.querySelector("strong").insertAdjacentHTML("afterend",
+		distanceText);
 
         listContainer.appendChild(obj.element);
       });
@@ -1089,7 +1195,24 @@ CSS;
         mapEl.scrollIntoView({ behavior:"smooth", block:"start" });
       });
     }
+	
+	//----------------------------------------------
+	document.querySelectorAll('.agency-item').forEach(function (item) {
+	  item.addEventListener('click', function () {
 
+		// حذف active از همه
+		document.querySelectorAll('.agency-item').forEach(function (el) {
+		  el.classList.remove('active');
+		});
+
+		// اضافه کردن active به آیتم کلیک‌شده
+		this.classList.add('active');
+
+	  });
+	});
+
+	
+	
     // initial filter
     filterList();
   }
@@ -1125,7 +1248,6 @@ JS;
               <option value="khorasanerazavi">خراسان رضوی</option>
               <option value="esfehan">اصفهان</option>
               <option value="fars">فارس</option>
-              <option value="azerbaijan">تبریز</option>
               <option value="gilan">گیلان</option>
               <option value="qom">قم</option>
 			  <option value="kerman">کرمان</option>
@@ -1133,7 +1255,11 @@ JS;
 			  <option value="yazd">یزد</option>
 			  <option value="hamedan">همدان</option>
 		      <option value="mazandaran">مازندران</option>
-
+			  <option value="khoozestan">خوزستان</option>
+		      <option value="qazvin">قزوین</option>
+		      <option value="zanjan">زنجان</option>
+			  <option value="ardebil">اردبیل</option>
+			  <option value="azarbayjanegharbi">آذربایجان غربی</option>
             </select>
 
             <button id="<?php echo esc_attr($filter_btn_id); ?>" class="filter-mini-btn" aria-label="فیلتر خدمات">
